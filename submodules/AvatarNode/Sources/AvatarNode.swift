@@ -1234,6 +1234,10 @@ public final class AvatarNode: ASDisplayNode {
         }
         
         self.addSubnode(self.contentNode)
+        
+        // Avatars are typically decorative - the containing view should provide context
+        // Set isAccessibilityElement = true only if the avatar is informative and standalone
+        self.isAccessibilityElement = false
     }
     
     deinit {
