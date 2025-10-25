@@ -59,6 +59,10 @@ public final class BackButtonComponent: Component {
                 }
             }
             self.addTarget(self, action: #selector(self.pressed), for: .touchUpInside)
+            
+            // Set accessibility properties
+            self.isAccessibilityElement = true
+            self.accessibilityTraits = .button
         }
         
         required public init?(coder: NSCoder) {
@@ -86,6 +90,10 @@ public final class BackButtonComponent: Component {
         
         func update(component: BackButtonComponent, availableSize: CGSize, state: EmptyComponentState, environment: Environment<Empty>, transition: ComponentTransition) -> CGSize {
             self.component = component
+            
+            // Set accessibility label
+            self.accessibilityLabel = "Back, \(component.title)"
+            self.accessibilityHint = "Navigate back"
             
             if self.arrowView.image == nil {
                 self.arrowView.image = NavigationBar.backArrowImage(color: .white)?.withRenderingMode(.alwaysTemplate)
@@ -118,7 +126,13 @@ public final class BackButtonComponent: Component {
                 }
                 transition.setPosition(view: titleView, position: titleFrame.origin)
                 titleView.bounds = CGRect(origin: CGPoint(), size: titleFrame.size)
+                
+                // Disable accessibility on title since parent handles it
+                titleView.isAccessibilityElement = false
             }
+            
+            // Disable accessibility on arrow since parent handles it
+            self.arrowView.isAccessibilityElement = false
             
             return size
         }
