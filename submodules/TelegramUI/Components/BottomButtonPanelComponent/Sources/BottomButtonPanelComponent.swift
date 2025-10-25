@@ -72,7 +72,12 @@ public final class BottomButtonPanelComponent: Component {
             
             self.addSubview(self.backgroundView)
             self.layer.addSublayer(self.separatorLayer)
-        }
+        
+        
+        // Set accessibility properties
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = .button
+    }
         
         required public init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
