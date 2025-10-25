@@ -39,6 +39,10 @@ final class GroupExpandActionButton: UIButton {
         self.layer.addSublayer(self.textLayer)
         
         self.addTarget(self, action: #selector(self.onPressed), for: .touchUpInside)
+        
+        // Set accessibility properties
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = .button
     }
     
     required init(coder: NSCoder) {
@@ -82,6 +86,9 @@ final class GroupExpandActionButton: UIButton {
     func update(theme: PresentationTheme, title: String, useOpaqueTheme: Bool) -> CGSize {
         let textConstrainedWidth: CGFloat = 100.0
         let color = theme.list.itemCheckColors.foregroundColor
+        
+        // Set accessibility label
+        self.accessibilityLabel = title
         
         if useOpaqueTheme {
             self.backgroundLayer.backgroundColor = theme.chat.inputMediaPanel.panelContentControlOpaqueOverlayColor.cgColor

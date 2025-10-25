@@ -231,6 +231,13 @@ private final class ItemListInviteLinkTimeLimitItemNode: ListViewItemNode {
         self.sliderView = sliderView
         
         self.updateSliderView()
+        
+        // Set accessibility properties
+        sliderView.isAccessibilityElement = true
+        sliderView.accessibilityTraits = .adjustable
+        if let item = self.item {
+            sliderView.accessibilityLabel = item.strings.InviteLink_Create_TimeLimitHeader
+        }
     }
     
     func asyncLayout() -> (_ item: ItemListInviteLinkTimeLimitItem, _ params: ListViewItemLayoutParams, _ neighbors: ItemListNeighbors) -> (ListViewItemNodeLayout, () -> Void) {
