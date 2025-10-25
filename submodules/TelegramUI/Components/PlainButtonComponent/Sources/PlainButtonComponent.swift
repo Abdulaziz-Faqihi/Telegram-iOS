@@ -21,6 +21,8 @@ public final class PlainButtonComponent: Component {
     public let animateScale: Bool
     public let animateContents: Bool
     public let tag: AnyObject?
+    public let accessibilityLabel: String?
+    public let accessibilityHint: String?
     
     public init(
         content: AnyComponent<Empty>,
@@ -33,7 +35,9 @@ public final class PlainButtonComponent: Component {
         animateAlpha: Bool = true,
         animateScale: Bool = true,
         animateContents: Bool = true,
-        tag: AnyObject? = nil
+        tag: AnyObject? = nil,
+        accessibilityLabel: String? = nil,
+        accessibilityHint: String? = nil
     ) {
         self.content = content
         self.background = background
@@ -46,6 +50,8 @@ public final class PlainButtonComponent: Component {
         self.animateScale = animateScale
         self.animateContents = animateContents
         self.tag = tag
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
     }
     
     public static func ==(lhs: PlainButtonComponent, rhs: PlainButtonComponent) -> Bool {
@@ -77,6 +83,12 @@ public final class PlainButtonComponent: Component {
             return false
         }
         if lhs.tag !== rhs.tag {
+            return false
+        }
+        if lhs.accessibilityLabel != rhs.accessibilityLabel {
+            return false
+        }
+        if lhs.accessibilityHint != rhs.accessibilityHint {
             return false
         }
         return true
@@ -193,6 +205,19 @@ public final class PlainButtonComponent: Component {
             self.componentState = state
             
             self.isEnabled = component.isEnabled
+            
+            // Set accessibility properties
+            self.isAccessibilityElement = true
+            self.accessibilityTraits = .button
+            if let accessibilityLabel = component.accessibilityLabel {
+                self.accessibilityLabel = accessibilityLabel
+            }
+            if let accessibilityHint = component.accessibilityHint {
+                self.accessibilityHint = accessibilityHint
+            }
+            if !component.isEnabled {
+                self.accessibilityTraits.insert(.notEnabled)
+            }
             
             let contentAlpha: CGFloat = 1.0
 

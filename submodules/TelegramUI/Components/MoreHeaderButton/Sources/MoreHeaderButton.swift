@@ -21,6 +21,16 @@ public final class MoreHeaderButton: HighlightableButtonNode {
     private var color: UIColor
     
     public var onPressed: (() -> Void)?
+    
+    public var accessibilityLabelValue: String? {
+        didSet {
+            if let accessibilityLabelValue = accessibilityLabelValue {
+                self.isAccessibilityElement = true
+                self.accessibilityLabel = accessibilityLabelValue
+                self.accessibilityTraits = .button
+            }
+        }
+    }
 
     public init(color: UIColor) {
         self.color = color
@@ -63,6 +73,10 @@ public final class MoreHeaderButton: HighlightableButtonNode {
         self.hitTestSlop = UIEdgeInsets(top: 0.0, left: -4.0, bottom: 0.0, right: -4.0)
         
         self.addTarget(self, action: #selector(self.pressed), forControlEvents: .touchUpInside)
+        
+        // Set default accessibility properties
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = .button
     }
     
     @objc private func pressed() {

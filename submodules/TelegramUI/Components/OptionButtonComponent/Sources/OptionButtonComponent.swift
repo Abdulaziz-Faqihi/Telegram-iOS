@@ -21,15 +21,21 @@ public final class OptionButtonComponent: Component {
     public let colors: Colors
     public let icon: String
     public let action: () -> Void
+    public let accessibilityLabel: String?
+    public let accessibilityHint: String?
     
     public init(
         colors: Colors,
         icon: String,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
+        accessibilityLabel: String? = nil,
+        accessibilityHint: String? = nil
     ) {
         self.colors = colors
         self.icon = icon
         self.action = action
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
     }
     
     public static func ==(lhs: OptionButtonComponent, rhs: OptionButtonComponent) -> Bool {
@@ -37,6 +43,12 @@ public final class OptionButtonComponent: Component {
             return false
         }
         if lhs.icon != rhs.icon {
+            return false
+        }
+        if lhs.accessibilityLabel != rhs.accessibilityLabel {
+            return false
+        }
+        if lhs.accessibilityHint != rhs.accessibilityHint {
             return false
         }
         return true
@@ -89,6 +101,16 @@ public final class OptionButtonComponent: Component {
             let previousComponent = self.component
             
             self.component = component
+            
+            // Set accessibility properties
+            self.isAccessibilityElement = true
+            self.accessibilityTraits = .button
+            if let accessibilityLabel = component.accessibilityLabel {
+                self.accessibilityLabel = accessibilityLabel
+            }
+            if let accessibilityHint = component.accessibilityHint {
+                self.accessibilityHint = accessibilityHint
+            }
             
             let size = CGSize(width: 53.0, height: 28.0)
             

@@ -59,6 +59,12 @@ public final class ListSwitchItemComponent: Component {
             self.backgroundColor = component.theme.list.itemBlocksBackgroundColor
             self.layer.cornerRadius = 12.0
             
+            // Set accessibility properties
+            self.isAccessibilityElement = true
+            self.accessibilityLabel = component.title
+            self.accessibilityValue = component.value ? "On" : "Off"
+            self.accessibilityTraits = .button
+            
             let size = CGSize(width: availableSize.width, height: 44.0)
             let rightInset: CGFloat = 16.0
             let leftInset: CGFloat = 16.0
@@ -84,6 +90,9 @@ public final class ListSwitchItemComponent: Component {
                     self.addSubview(switchComponentView)
                 }
                 transition.setFrame(view: switchComponentView, frame: switchFrame)
+                
+                // Disable accessibility on the switch itself since the parent handles it
+                switchComponentView.isAccessibilityElement = false
             }
             
             let titleSize = self.title.update(
@@ -100,6 +109,9 @@ public final class ListSwitchItemComponent: Component {
                 }
                 transition.setPosition(view: titleView, position: titleFrame.origin)
                 titleView.bounds = CGRect(origin: CGPoint(), size: titleFrame.size)
+                
+                // Disable accessibility on the title since the parent handles it
+                titleView.isAccessibilityElement = false
             }
             
             return size

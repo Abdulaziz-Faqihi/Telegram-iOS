@@ -105,7 +105,12 @@ public final class CameraButton: Component {
             let longTapGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
             self.longTapGestureRecognizer = longTapGestureRecognizer
             self.addGestureRecognizer(longTapGestureRecognizer)
-        }
+        
+        
+        // Set accessibility properties
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = .button
+    }
         
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")

@@ -43,6 +43,10 @@ final class GroupHeaderActionButton: UIButton {
         
         self.tintContainerLayer.addSublayer(self.tintBackgroundLayer)
         self.tintContainerLayer.addSublayer(self.tintTextLayer)
+        
+        // Set accessibility properties
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = .button
     }
     
     required init(coder: NSCoder) {
@@ -85,6 +89,9 @@ final class GroupHeaderActionButton: UIButton {
     
     func update(theme: PresentationTheme, title: String, compact: Bool) -> CGSize {
         let textConstrainedWidth: CGFloat = 100.0
+        
+        // Set accessibility label
+        self.accessibilityLabel = title
         
         let needsVibrancy = !theme.overallDarkAppearance && compact
         
