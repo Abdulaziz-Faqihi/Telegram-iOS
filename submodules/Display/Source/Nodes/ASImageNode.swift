@@ -21,6 +21,7 @@ open class ASImageNode: ASDisplayNode {
                     self.invalidateCalculatedLayout()
                 }
             }
+            self.updateAccessibilityFromImage()
         }
     }
     
@@ -34,6 +35,22 @@ open class ASImageNode: ASDisplayNode {
 
     override public init() {
         super.init()
+        // By default, images are not accessibility elements unless they convey important information
+        // This can be overridden by callers when the image is decorative or informative
+        self.isAccessibilityElement = false
+    }
+    
+    /// Updates accessibility properties from the image's accessibility description if available
+    private func updateAccessibilityFromImage() {
+        if let image = self.image {
+            // If the image has accessibility description, use it
+            if #available(iOS 11.0, *) {
+                if let accessibilityDescription = image.imageAsset?.value(forKey: "accessibilityDescription") as? String {
+                    self.accessibilityLabel = accessibilityDescription
+                    self.isAccessibilityElement = true
+                }
+            }
+        }
     }
     
     override open func didLoad() {

@@ -8,6 +8,8 @@ public final class Button: Component {
     public let automaticHighlight: Bool
     public let isEnabled: Bool
     public let isExclusive: Bool
+    public let accessibilityLabel: String?
+    public let accessibilityHint: String?
     public let action: () -> Void
     public let holdAction: ((UIView) -> Void)?
     public let highlightedAction: ActionSlot<Bool>?
@@ -16,6 +18,8 @@ public final class Button: Component {
         content: AnyComponent<Empty>,
         isEnabled: Bool = true,
         automaticHighlight: Bool = true,
+        accessibilityLabel: String? = nil,
+        accessibilityHint: String? = nil,
         action: @escaping () -> Void,
         highlightedAction: ActionSlot<Bool>? = nil
     ) {
@@ -25,6 +29,8 @@ public final class Button: Component {
             tag: nil,
             automaticHighlight: automaticHighlight,
             isEnabled: isEnabled,
+            accessibilityLabel: accessibilityLabel,
+            accessibilityHint: accessibilityHint,
             action: action,
             holdAction: nil,
             highlightedAction: highlightedAction
@@ -38,6 +44,8 @@ public final class Button: Component {
         automaticHighlight: Bool = true,
         isEnabled: Bool = true,
         isExclusive: Bool = true,
+        accessibilityLabel: String? = nil,
+        accessibilityHint: String? = nil,
         action: @escaping () -> Void,
         holdAction: ((UIView) -> Void)?,
         highlightedAction: ActionSlot<Bool>?
@@ -48,6 +56,8 @@ public final class Button: Component {
         self.automaticHighlight = automaticHighlight
         self.isEnabled = isEnabled
         self.isExclusive = isExclusive
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
         self.action = action
         self.holdAction = holdAction
         self.highlightedAction = highlightedAction
@@ -61,6 +71,8 @@ public final class Button: Component {
             automaticHighlight: self.automaticHighlight,
             isEnabled: self.isEnabled,
             isExclusive: self.isExclusive,
+            accessibilityLabel: self.accessibilityLabel,
+            accessibilityHint: self.accessibilityHint,
             action: self.action,
             holdAction: self.holdAction,
             highlightedAction: self.highlightedAction
@@ -75,6 +87,8 @@ public final class Button: Component {
             automaticHighlight: self.automaticHighlight,
             isEnabled: self.isEnabled,
             isExclusive: isExclusive,
+            accessibilityLabel: self.accessibilityLabel,
+            accessibilityHint: self.accessibilityHint,
             action: self.action,
             holdAction: self.holdAction,
             highlightedAction: self.highlightedAction
@@ -90,6 +104,8 @@ public final class Button: Component {
             automaticHighlight: self.automaticHighlight,
             isEnabled: self.isEnabled,
             isExclusive: self.isExclusive,
+            accessibilityLabel: self.accessibilityLabel,
+            accessibilityHint: self.accessibilityHint,
             action: self.action,
             holdAction: holdAction,
             highlightedAction: self.highlightedAction
@@ -104,6 +120,40 @@ public final class Button: Component {
             automaticHighlight: self.automaticHighlight,
             isEnabled: self.isEnabled,
             isExclusive: self.isExclusive,
+            accessibilityLabel: self.accessibilityLabel,
+            accessibilityHint: self.accessibilityHint,
+            action: self.action,
+            holdAction: self.holdAction,
+            highlightedAction: self.highlightedAction
+        )
+    }
+    
+    public func withAccessibilityLabel(_ accessibilityLabel: String?) -> Button {
+        return Button(
+            content: self.content,
+            minSize: self.minSize,
+            tag: self.tag,
+            automaticHighlight: self.automaticHighlight,
+            isEnabled: self.isEnabled,
+            isExclusive: self.isExclusive,
+            accessibilityLabel: accessibilityLabel,
+            accessibilityHint: self.accessibilityHint,
+            action: self.action,
+            holdAction: self.holdAction,
+            highlightedAction: self.highlightedAction
+        )
+    }
+    
+    public func withAccessibilityHint(_ accessibilityHint: String?) -> Button {
+        return Button(
+            content: self.content,
+            minSize: self.minSize,
+            tag: self.tag,
+            automaticHighlight: self.automaticHighlight,
+            isEnabled: self.isEnabled,
+            isExclusive: self.isExclusive,
+            accessibilityLabel: self.accessibilityLabel,
+            accessibilityHint: accessibilityHint,
             action: self.action,
             holdAction: self.holdAction,
             highlightedAction: self.highlightedAction
@@ -290,6 +340,21 @@ public final class Button: Component {
             self.updateAlpha(transition: transition)
             self.isEnabled = component.isEnabled
             self.isExclusiveTouch = component.isExclusive
+            
+            // Configure accessibility
+            self.isAccessibilityElement = true
+            self.accessibilityTraits = .button
+            if let accessibilityLabel = component.accessibilityLabel {
+                self.accessibilityLabel = accessibilityLabel
+            }
+            if let accessibilityHint = component.accessibilityHint {
+                self.accessibilityHint = accessibilityHint
+            }
+            if !component.isEnabled {
+                self.accessibilityTraits.insert(.notEnabled)
+            } else {
+                self.accessibilityTraits.remove(.notEnabled)
+            }
             
             transition.setFrame(view: self.contentView, frame: CGRect(origin: CGPoint(x: floor((size.width - contentSize.width) / 2.0), y: floor((size.height - contentSize.height) / 2.0)), size: contentSize), completion: nil)
             

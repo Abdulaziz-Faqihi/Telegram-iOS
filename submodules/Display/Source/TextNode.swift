@@ -1228,6 +1228,16 @@ open class TextNode: ASDisplayNode, TextNodeProtocol {
         self.backgroundColor = UIColor.clear
         self.isOpaque = false
         self.clipsToBounds = false
+        
+        // By default, text nodes should be accessible
+        self.isAccessibilityElement = true
+    }
+    
+    /// Updates the accessibility label from the current text
+    private func updateAccessibilityLabel() {
+        if let attributedString = self.cachedLayout?.attributedString {
+            self.accessibilityLabel = attributedString.string
+        }
     }
     
     override open func didLoad() {
@@ -2735,6 +2745,9 @@ open class TextNode: ASDisplayNode, TextNodeProtocol {
                     }
                     node.setNeedsDisplay()
                 }
+                
+                // Update accessibility when layout changes
+                node.updateAccessibilityLabel()
                 
                 return node
             })

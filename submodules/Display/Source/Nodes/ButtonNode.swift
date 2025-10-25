@@ -58,49 +58,59 @@ open class ASButtonNode: ASControlNode {
         self.titleNode = ImmediateTextNode()
         self.titleNode.isUserInteractionEnabled = false
         self.titleNode.displaysAsynchronously = false
+        self.titleNode.isAccessibilityElement = false
         
         self.highlightedTitleNode = ImmediateTextNode()
         self.highlightedTitleNode.isUserInteractionEnabled = false
         self.highlightedTitleNode.displaysAsynchronously = false
+        self.highlightedTitleNode.isAccessibilityElement = false
         
         self.disabledTitleNode = ImmediateTextNode()
         self.disabledTitleNode.isUserInteractionEnabled = false
         self.disabledTitleNode.displaysAsynchronously = false
+        self.disabledTitleNode.isAccessibilityElement = false
         
         self.imageNode = ASImageNode()
         self.imageNode.isUserInteractionEnabled = false
         self.imageNode.displaysAsynchronously = false
         self.imageNode.displayWithoutProcessing = true
+        self.imageNode.isAccessibilityElement = false
         
         self.selectedImageNode = ASImageNode()
         self.selectedImageNode.isUserInteractionEnabled = false
         self.selectedImageNode.displaysAsynchronously = false
         self.selectedImageNode.displayWithoutProcessing = true
+        self.selectedImageNode.isAccessibilityElement = false
         
         self.highlightedImageNode = ASImageNode()
         self.highlightedImageNode.isUserInteractionEnabled = false
         self.highlightedImageNode.displaysAsynchronously = false
         self.highlightedImageNode.displayWithoutProcessing = true
+        self.highlightedImageNode.isAccessibilityElement = false
         
         self.highlightedSelectedImageNode = ASImageNode()
         self.highlightedSelectedImageNode.isUserInteractionEnabled = false
         self.highlightedSelectedImageNode.displaysAsynchronously = false
         self.highlightedSelectedImageNode.displayWithoutProcessing = true
+        self.highlightedSelectedImageNode.isAccessibilityElement = false
         
         self.disabledImageNode = ASImageNode()
         self.disabledImageNode.isUserInteractionEnabled = false
         self.disabledImageNode.displaysAsynchronously = false
         self.disabledImageNode.displayWithoutProcessing = true
+        self.disabledImageNode.isAccessibilityElement = false
         
         self.backgroundImageNode = ASImageNode()
         self.backgroundImageNode.isUserInteractionEnabled = false
         self.backgroundImageNode.displaysAsynchronously = false
         self.backgroundImageNode.displayWithoutProcessing = true
+        self.backgroundImageNode.isAccessibilityElement = false
         
         self.highlightedBackgroundImageNode = ASImageNode()
         self.highlightedBackgroundImageNode.isUserInteractionEnabled = false
         self.highlightedBackgroundImageNode.displaysAsynchronously = false
         self.highlightedBackgroundImageNode.displayWithoutProcessing = true
+        self.highlightedBackgroundImageNode.isAccessibilityElement = false
         
         super.init()
         
@@ -121,6 +131,11 @@ open class ASButtonNode: ASControlNode {
         self.highlightedSelectedImageNode.isHidden = true
         self.addSubnode(self.disabledImageNode)
         self.disabledImageNode.isHidden = true
+        
+        // Configure accessibility
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = .button
+        self.updateAccessibilityLabel()
     }
     
     override open func calculateSizeThatFits(_ constrainedSize: CGSize) -> CGSize {
@@ -217,6 +232,7 @@ open class ASButtonNode: ASControlNode {
             }
             self.titleNode.attributedText = title
         }
+        self.updateAccessibilityLabel()
     }
     
     open func attributedTitle(for state: UIControl.State) -> NSAttributedString? {
@@ -291,6 +307,13 @@ open class ASButtonNode: ASControlNode {
                 } else {
                     self.selectedImageNode.isHidden = true
                     self.imageNode.isHidden = false
+                }
+                
+                // Update accessibility state
+                if self.isSelected {
+                    self.accessibilityTraits.insert(.selected)
+                } else {
+                    self.accessibilityTraits.remove(.selected)
                 }
             }
         }
@@ -384,6 +407,27 @@ open class ASButtonNode: ASControlNode {
             self.imageNode.isHidden = true
             self.disabledImageNode.isHidden = false
         }
+        
+        // Update accessibility state
+        if isEnabled {
+            self.accessibilityTraits.remove(.notEnabled)
+        } else {
+            self.accessibilityTraits.insert(.notEnabled)
+        }
+    }
+    
+    /// Updates the accessibility label from the button's title text
+    private func updateAccessibilityLabel() {
+        // Use the title text as the accessibility label if available
+        if let title = self.titleNode.attributedText?.string, !title.isEmpty {
+            self.accessibilityLabel = title
+        } else if let highlightedTitle = self.highlightedTitleNode.attributedText?.string, !highlightedTitle.isEmpty {
+            self.accessibilityLabel = highlightedTitle
+        } else if let disabledTitle = self.disabledTitleNode.attributedText?.string, !disabledTitle.isEmpty {
+            self.accessibilityLabel = disabledTitle
+        }
+        // If accessibilityLabel is still not set by this point or explicitly by caller,
+        // VoiceOver will attempt to describe the button using its subviews
     }
     
     override open func layout() {
