@@ -81,6 +81,10 @@ public final class CheckComponent: Component {
         
         init() {
             super.init(frame: CGRect())
+            
+            // Configure accessibility - checkmarks are usually decorative
+            // The parent interactive element should handle accessibility
+            self.isAccessibilityElement = false
         }
 
         required init?(coder aDecoder: NSCoder) {

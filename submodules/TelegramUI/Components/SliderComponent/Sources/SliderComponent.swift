@@ -215,6 +215,11 @@ public final class SliderComponent: Component {
                 sliderView.disablesInteractiveTransitionGestureRecognizer = true
                 sliderView.addTarget(self, action: #selector(self.sliderValueChanged), for: .valueChanged)
                 sliderView.layer.allowsGroupOpacity = true
+                
+                // Configure accessibility for slider
+                sliderView.isAccessibilityElement = true
+                sliderView.accessibilityTraits = .adjustable
+                
                 self.sliderView = sliderView
                 self.addSubview(sliderView)
             }
@@ -227,6 +232,8 @@ public final class SliderComponent: Component {
                 } else {
                     sliderView.lowerBoundValue = 0.0
                 }
+                // Update accessibility value for discrete slider
+                sliderView.accessibilityValue = "\(discrete.value) of \(discrete.valueCount - 1)"
             case let .continuous(continuous):
                 sliderView.value = continuous.value
                 if let minValue = continuous.minValue {
@@ -234,6 +241,9 @@ public final class SliderComponent: Component {
                 } else {
                     sliderView.lowerBoundValue = 0.0
                 }
+                // Update accessibility value for continuous slider
+                let percentage = Int(continuous.value * 100)
+                sliderView.accessibilityValue = "\(percentage)%"
             }
             sliderView.interactionBegan = {
                 internalIsTrackingUpdated?(true)

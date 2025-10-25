@@ -8,6 +8,9 @@ open class HighlightTrackingButton: UIButton {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
+        
+        // Configure basic accessibility - button trait inherited from UIButton
+        self.isAccessibilityElement = true
     }
     
     required public init?(coder: NSCoder) {
