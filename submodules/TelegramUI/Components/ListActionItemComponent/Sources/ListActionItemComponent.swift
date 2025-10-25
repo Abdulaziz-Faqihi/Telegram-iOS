@@ -333,6 +333,10 @@ public final class ListActionItemComponent: Component {
                     customUpdateIsHighlighted(isHighlighted)
                 }
             }
+            
+            // Set default accessibility properties
+            self.isAccessibilityElement = true
+            self.accessibilityTraits = .button
         }
         
         required public init?(coder: NSCoder) {
@@ -812,6 +816,26 @@ public final class ListActionItemComponent: Component {
             }
             
             self.separatorInset = contentLeftInset
+            
+            // Update accessibility label from title view
+            if let titleView = self.title.view as? UILabel {
+                self.accessibilityLabel = titleView.text
+            } else if let titleView = self.title.view {
+                // Try to extract text from the view
+                if let text = titleView.accessibilityLabel {
+                    self.accessibilityLabel = text
+                }
+            }
+            
+            // Update accessibility value based on accessory state
+            if case let .toggle(toggle) = component.accessory {
+                self.accessibilityValue = toggle.isOn ? "On" : "Off"
+                if !toggle.isEnabled {
+                    self.accessibilityTraits.insert(.notEnabled)
+                } else {
+                    self.accessibilityTraits.remove(.notEnabled)
+                }
+            }
             
             if let backgroundComponent = component.background {
                 var backgroundTransition = transition

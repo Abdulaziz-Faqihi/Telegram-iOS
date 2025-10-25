@@ -81,6 +81,10 @@ public final class CheckComponent: Component {
         
         init() {
             super.init(frame: CGRect())
+            
+            // Set accessibility properties
+            self.isAccessibilityElement = true
+            self.accessibilityTraits = .button
         }
 
         required init?(coder aDecoder: NSCoder) {
@@ -90,6 +94,9 @@ public final class CheckComponent: Component {
         public func update(component: CheckComponent, availableSize: CGSize, transition: ComponentTransition) -> CGSize {
             self.checkLayer.setSelected(component.selected, animated: true)
             self.checkLayer.theme = component.theme.checkNodeTheme
+            
+            // Update accessibility value
+            self.accessibilityValue = component.selected ? "Selected" : "Not selected"
             
             return component.size
         }
