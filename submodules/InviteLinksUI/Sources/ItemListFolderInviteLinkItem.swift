@@ -371,8 +371,8 @@ public class ItemListFolderInviteLinkItemNode: ListViewItemNode, ItemListItemNod
                     strongSelf.avatarsContent = avatarsContent
                     
                     strongSelf.activateArea.frame = CGRect(origin: CGPoint(x: params.leftInset, y: 0.0), size: CGSize(width: params.width - params.leftInset - params.rightInset, height: layout.contentSize.height))
-//                    strongSelf.activateArea.accessibilityLabel = item.title
-//                    strongSelf.activateArea.accessibilityValue = item.label
+                    strongSelf.activateArea.accessibilityLabel = item.invite.flatMap({ $0.link.replacingOccurrences(of: "https://", with: "") }) ?? item.presentationData.strings.InviteLink_Title
+                    strongSelf.activateArea.accessibilityValue = subtitle
                     strongSelf.activateArea.accessibilityTraits = []
                     
                     if let _ = updatedTheme {
