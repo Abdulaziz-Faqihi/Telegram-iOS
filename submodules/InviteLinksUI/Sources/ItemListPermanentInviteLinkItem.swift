@@ -431,7 +431,7 @@ public class ItemListPermanentInviteLinkItemNode: ListViewItemNode, ItemListItem
                     strongSelf.avatarsContent = avatarsContent
                     
                     strongSelf.activateArea.frame = CGRect(origin: CGPoint(x: params.leftInset, y: 0.0), size: CGSize(width: params.width - params.leftInset - params.rightInset, height: layout.contentSize.height))
-                    strongSelf.activateArea.accessibilityLabel = item.invite.flatMap({ $0.link?.replacingOccurrences(of: "https://", with: "") }) ?? item.presentationData.strings.InviteLink_Title
+                    strongSelf.activateArea.accessibilityLabel = item.invite.flatMap({ $0.link.flatMap({ $0.replacingOccurrences(of: "https://", with: "") }) }) ?? item.presentationData.strings.InviteLink_Title
                     strongSelf.activateArea.accessibilityValue = subtitle
                     strongSelf.activateArea.accessibilityTraits = []
                     
