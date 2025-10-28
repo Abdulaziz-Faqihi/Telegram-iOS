@@ -13,7 +13,6 @@ public func addAccessibilityChildren(of node: ASDisplayNode, container: Any, to 
         element.accessibilityHint = node.accessibilityHint
         element.accessibilityIdentifier = node.accessibilityIdentifier
         
-        //node.accessibilityFrame = UIAccessibilityConvertFrameToScreenCoordinates(node.bounds, node.view)
         list.append(element)
     } else if let accessibilityElements = node.accessibilityElements {
         list.append(contentsOf: accessibilityElements)
