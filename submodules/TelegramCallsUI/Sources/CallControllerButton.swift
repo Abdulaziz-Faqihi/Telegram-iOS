@@ -105,7 +105,10 @@ final class CallControllerButtonItemNode: HighlightTrackingButtonNode {
         self.textNode.isUserInteractionEnabled = false
         
         super.init(pointerStyle: nil)
-        
+
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = [.button]
+
         self.addSubnode(self.wrapperNode)
         self.wrapperNode.addSubnode(self.contentContainer)
         self.contentContainer.frame = CGRect(origin: CGPoint(), size: CGSize(width: self.largeButtonSize, height: self.largeButtonSize))
@@ -387,6 +390,7 @@ final class CallControllerButtonItemNode: HighlightTrackingButtonNode {
         
         if self.currentText != text {
             self.textNode.attributedText = NSAttributedString(string: text, font: labelFont, textColor: .white)
+            self.accessibilityLabel = text
         }
         let textSize = self.textNode.updateLayout(CGSize(width: 150.0, height: 100.0))
         let textFrame = CGRect(origin: CGPoint(x: floor((size.width - textSize.width) / 2.0), y: size.height + (isSmall ? 5.0 : 8.0)), size: textSize)

@@ -190,11 +190,16 @@ public final class ChatTextInputActionButtonsNode: ASDisplayNode, ChatSendMessag
         self.sendButtonBackgroundView = UIImageView()
         self.sendButtonBackgroundView.image = generateStretchableFilledCircleImage(diameter: 34.0, color: .white)?.withRenderingMode(.alwaysTemplate)
         self.sendButton = HighlightTrackingButtonNode(pointerStyle: nil)
-        
+        self.sendButton.accessibilityLabel = strings.MediaPicker_Send
+        self.sendButton.accessibilityTraits = [.button]
+
         self.textNode = ImmediateAnimatedCountLabelNode()
         self.textNode.isUserInteractionEnabled = false
         
         self.expandMediaInputButton = HighlightTrackingButton()
+        self.expandMediaInputButton.accessibilityLabel = "Expand media input"
+        self.expandMediaInputButton.accessibilityTraits = [.button]
+        self.expandMediaInputButton.isAccessibilityElement = true
         self.expandMediaInputButtonBackgroundView = GlassBackgroundView()
         self.expandMediaInputButtonBackgroundView.isUserInteractionEnabled = false
         self.expandMediaInputButton.addSubview(self.expandMediaInputButtonBackgroundView)

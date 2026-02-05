@@ -1521,7 +1521,14 @@ public class ChatListItemNode: ItemListRevealOptionsItemNode {
         } set(value) {
         }
     }
-    
+
+    override public var accessibilityHint: String? {
+        get {
+            return "Double tap to open chat"
+        } set(value) {
+        }
+    }
+
     override public var visibility: ListViewItemNodeVisibility {
         didSet {
             let wasVisible = self.visibilityStatus
@@ -1656,9 +1663,10 @@ public class ChatListItemNode: ItemListRevealOptionsItemNode {
         self.separatorNode.isLayerBacked = true
         
         super.init(layerBacked: false, dynamicBounce: false, rotated: false, seeThrough: false)
-        
+
         self.isAccessibilityElement = true
-        
+        self.accessibilityTraits = [.button]
+
         self.addSubnode(self.backgroundNode)
         self.addSubnode(self.separatorNode)
         
